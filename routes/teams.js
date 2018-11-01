@@ -34,13 +34,13 @@ router.findOne = (req, res) => {
 
     res.setHeader('Content-Type', 'application/json');
     Teams.findOne({"_id": req.params.id}, function (err, team) {
-        if (err)
-            res.json({message: 'Team NOT Found!', errmsg: err});
-        else {
-            if (team!=null)
-                res.send(JSON.stringify(team, null, 5));
-            else  res.json({ message: 'Team NOT Found! Please check the right id'} );
+        if (err) {
+            res.status(404);
+            res.json({message: 'Team NOT Found! Please check the right id', errmsg: err})
         }
+        else
+            res.send(JSON.stringify(team, null, 5));
+
     });
 };
 
@@ -57,7 +57,7 @@ router.findOneByName= (req, res) => {
         ]
     }
     var count = 0
-   Teams.count(_filter, function (err, doc) {
+   Teams.countDocuments(_filter, function (err, doc) {
         if (err) {
             res.json({errmsg: err});
         } else {
@@ -69,7 +69,8 @@ router.findOneByName= (req, res) => {
         .sort({'_id': -1})
         .exec(function (err, teams) {
             if (err||teams.length==0) {
-                res.json({message:"Teams Not Found!",errmsg: err});
+                res.status(404);
+                res.json({message:"Teams Not Found!(invalid keyword)",errmsg: err});
             } else {
                 res.send(JSON.stringify(teams,null,5));
             }

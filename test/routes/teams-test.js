@@ -149,6 +149,93 @@ describe('Teams', function (){
                     });
             });  // end-after
         }); // end-describe
+    })
+
+    describe('PUT api',function(){
+        describe('PUT /teams/:id/rank', () => {
+            describe('When id is valid', function () {
+                it('should return a message and the rank changed', function (done) {
+                    chai.request(server)
+                        .get('/teams')
+                        .end(function (err, res) {
+                            let rank = {rank: 111};
+                            chai.request(server)
+                                .put('/teams/' + res.body[4]._id + '/rank')
+                                .send(rank)
+                                .end(function (error, response) {
+                                    expect(response).to.have.status(200);
+                                    expect(response.body).to.be.a('object');
+                                    expect(response.body).to.have.property('message').equal('Team Successfully ChangeRank!');
+                                    done()
+                                });
+                        });
+                });
+                after(function (done) {
+                    chai.request(server)
+                        .get('/teams')
+                        .end(function (err, res) {
+
+                            expect(res.body[4].rank).equal(111);
+                            done();
+                        });
+                });  // end-after
+            }); // end-describe
+            describe('When id is invalid', function () {
+                it('should return a 404 and a message for invalid donation id', function (done) {
+                    let rank = {rank: 111};
+                    chai.request(server)
+                        .put('/teams/assad/rank')
+                        .send(rank)
+                        .end(function (err, res) {
+                            expect(res).to.have.status(404);
+                            expect(res.body).to.have.property('message', 'Team NOT ChangeRank!');
+                            done();
+                        });
+                });
+            });
+        });
+
+        describe('PUT /teams/:id/numPlayer', () => {
+            it('should return a message and the nunmPlayer changed', function(done) {
+                chai.request(server)
+                    .get('/teams')
+                    .end(function (err, res) {
+                        let numPlayer={numPlayer:201};
+                        chai.request(server)
+                            .put('/teams/' + res.body[4]._id+'/numPlayer')
+                            .send(numPlayer)
+                            .end(function (error, response) {
+                                expect(response).to.have.status(200);
+                                expect(response.body).to.be.a('object');
+                                expect(response.body).to.have.property('message').equal('Team Successfully Change NumPlayer!' );
+                                done()
+                            });
+                    });
+            });
+            after(function  (done) {
+                chai.request(server)
+                    .get('/teams')
+                    .end(function(err, res) {
+
+                        expect( res.body[4].numPlayer).equal(201) ;
+                        done();
+                    });
+            });  // end-after
+        }); // end-describe
+
+        describe('When id is invalid', function () {
+            it('should return a 404 and a message for invalid donation id', function (done) {
+                let numPlayer={numPlayer:201};
+                chai.request(server)
+                    .put('/teams/assad/numPlayer')
+                    .send(numPlayer)
+                    .end(function (err, res) {
+                        expect(res).to.have.status(404);
+                        expect(res.body).to.have.property('message', 'Team NOT Change NumPlayer!');
+                        done();
+                    });
+            });
+        });
     });
 
     describe('DELETE api',function(){
@@ -181,6 +268,18 @@ describe('Teams', function (){
                         });
                 });  // end-after
             }); // end-describe
+            describe('When id is invalid',function (){
+                it('should return a 404 and a message for invalid team id', function(done) {
+                    chai.request(server)
+                        .delete('/teams/asfsaf')
+                        .end(function(err, res) {
+                            expect(res).to.have.status(404);
+                            expect(res.body).to.have.property('message','Team NOT DELETED!(invalid id)' ) ;
+                            done();
+                        });
+
+                });
+            });
         });
     });
 });

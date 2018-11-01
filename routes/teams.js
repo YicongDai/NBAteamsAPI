@@ -155,8 +155,11 @@ router.changeNumPlayer = (req, res) => {
     //     else {
     //         if (team != null) {
     Teams.findByIdAndUpdate({"_id": req.params.id}, {$set:{numPlayer: req.body.numPlayer}}, function (err) {
-        if (err)
+        if (err){
+            res.status(404);
             res.json({message: 'Team NOT Change NumPlayer!', errmsg: err});
+        }
+
         else
             res.json({message: 'Team Successfully Change NumPlayer!'});
     });
@@ -177,8 +180,11 @@ router.changeRank = (req, res) => {
     //     else {
     //         if (team != null) {
     Teams.findByIdAndUpdate({"_id": req.params.id}, {$set:{"rank": req.body.rank}}, function (err,team) {
-        if (err)
+        if (err){
+            res.status(404);
             res.json({message: 'Team NOT ChangeRank!', errmsg: err});
+        }
+
         else
             res.json({message: 'Team Successfully ChangeRank!'});
     });
@@ -216,15 +222,16 @@ router.changePlayerId = (req, res) => {
 router.deleteTeam= (req, res) => {
 
         Teams.findByIdAndRemove(req.params.id, function (err,teams) {
-            if (err)
-                res.json({message: 'Team NOT DELETED!', errmsg: err});
-            else {
-                if (teams != null)
+            if (err||teams==null) {
+                res.status(404);
+                res.json({message: 'Team NOT DELETED!(invalid id)', errmsg: err})
+            }
+            else
                     res.json({message: 'Team Successfully Deleted!',data:teams});
 
-                else
-                    res.json({message: 'Team NOT Found! Please check the right id'});
-            }
+
+
+
         });
     };
 module.exports = router;

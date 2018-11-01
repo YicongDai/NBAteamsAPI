@@ -151,36 +151,36 @@ describe('Teams', function (){
         }); // end-describe
     });
 
-    // describe('DELETE api',function(){
-    //     describe('delete /teams/:id',  function () {
-    //         describe('When id is valid', function () {
-    //             it('should return a message and delete a specific team', function (done) {
-    //                 chai.request(server)
-    //                     .get('/teams')
-    //                     .end(function (err, res) {
-    //                         chai.request(server)
-    //                             .delete('/teams/' + res.body[4]._id)
-    //                             .end(function (error, response) {
-    //                                 expect(response).to.have.status(200);
-    //                                 expect(response.body).to.have.property('message').equal('Team Successfully Deleted!');
-    //                                 done();
-    //                             });
-    //                     });
-    //             });
-    //             after(function  (done) {
-    //                 chai.request(server)
-    //                     .get('/teams')
-    //                     .end(function(err, res) {
-    //                         expect(res).to.have.status(200);
-    //                         expect(res.body).to.be.a('array');
-    //                         let result = _.map(res.body, (teams) => {
-    //                             return {name: teams.name, city: teams.city}
-    //                         });
-    //                         expect(result).to.not.include({name: 'Houston Rockets', city: "Houston"});
-    //                         done();
-    //                     });
-    //             });  // end-after
-    //         }); // end-describe
-    //     });
-    // });
+    describe('DELETE api',function(){
+        describe('delete /teams/:id',  function () {
+            describe('When id is valid', function () {
+                it('should return a message and delete a specific team', function (done) {
+                    chai.request(server)
+                        .get('/teams')
+                        .end(function (err, res) {
+                            chai.request(server)
+                                .delete('/teams/' + res.body[4]._id)
+                                .end(function (error, response) {
+                                    expect(response).to.have.status(200);
+                                    expect(response.body).to.have.property('message').equal('Team Successfully Deleted!');
+                                    done();
+                                });
+                        });
+                });
+                after(function  (done) {
+                    chai.request(server)
+                        .get('/teams')
+                        .end(function(err, res) {
+                            expect(res).to.have.status(200);
+                            expect(res.body).to.be.a('array');
+                            let result = _.map(res.body, (teams) => {
+                                return {name: teams.name, city: teams.city}
+                            });
+                            expect(result).to.not.include({name: 'Houston Rockets', city: "Houston"});
+                            done();
+                        });
+                });  // end-after
+            }); // end-describe
+        });
+    });
 });

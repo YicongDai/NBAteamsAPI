@@ -149,7 +149,7 @@ describe('Teams', function (){
                     });
             });  // end-after
         }); // end-describe
-    })
+    });
 
     describe('PUT api',function(){
         describe('PUT /teams/:id/rank', () => {
@@ -181,7 +181,7 @@ describe('Teams', function (){
                 });  // end-after
             }); // end-describe
             describe('When id is invalid', function () {
-                it('should return a 404 and a message for invalid donation id', function (done) {
+                it('should return a 404 and a message for invalid team id', function (done) {
                     let rank = {rank: 111};
                     chai.request(server)
                         .put('/teams/assad/rank')
@@ -193,38 +193,57 @@ describe('Teams', function (){
                         });
                 });
             });
+            // describe('When value is invalid', function () {
+            //     it('should return a 404 and a message for invalid value', function (done) {
+            //         chai.request(server)
+            //             .get('/teams')
+            //             .end(function (err, res) {
+            //                 let rank = {rank: -1};
+            //                 chai.request(server)
+            //                     .put('/teams' + res.body[4]._id + '/rank')
+            //                     .send(rank)
+            //                     .end(function (err, res) {
+            //                         expect(res).to.have.status(404);
+            //                         expect(res.body).to.have.property('message', 'Team NOT ChangeRank!(invalid value for rank)');
+            //                         done();
+            //                     });
+            //             });
+            //     });
+            // });
         });
 
         describe('PUT /teams/:id/numPlayer', () => {
-            it('should return a message and the nunmPlayer changed', function(done) {
-                chai.request(server)
-                    .get('/teams')
-                    .end(function (err, res) {
-                        let numPlayer={numPlayer:201};
-                        chai.request(server)
-                            .put('/teams/' + res.body[4]._id+'/numPlayer')
-                            .send(numPlayer)
-                            .end(function (error, response) {
-                                expect(response).to.have.status(200);
-                                expect(response.body).to.be.a('object');
-                                expect(response.body).to.have.property('message').equal('Team Successfully Change NumPlayer!' );
-                                done()
-                            });
-                    });
-            });
-            after(function  (done) {
-                chai.request(server)
-                    .get('/teams')
-                    .end(function(err, res) {
+            describe('When id is valid', function () {
+                it('should return a message and the nunmPlayer changed', function (done) {
+                    chai.request(server)
+                        .get('/teams')
+                        .end(function (err, res) {
+                            let numPlayer = {numPlayer: 201};
+                            chai.request(server)
+                                .put('/teams/' + res.body[4]._id + '/numPlayer')
+                                .send(numPlayer)
+                                .end(function (error, response) {
+                                    expect(response).to.have.status(200);
+                                    expect(response.body).to.be.a('object');
+                                    expect(response.body).to.have.property('message').equal('Team Successfully Change NumPlayer!');
+                                    done()
+                                });
+                        });
+                });
+                after(function (done) {
+                    chai.request(server)
+                        .get('/teams')
+                        .end(function (err, res) {
 
-                        expect( res.body[4].numPlayer).equal(201) ;
-                        done();
-                    });
-            });  // end-after
-        }); // end-describe
+                            expect(res.body[4].numPlayer).equal(201);
+                            done();
+                        });
+                });  // end-after
+            }); // end-describe
+        });
 
         describe('When id is invalid', function () {
-            it('should return a 404 and a message for invalid donation id', function (done) {
+            it('should return a 404 and a message for invalid team id', function (done) {
                 let numPlayer={numPlayer:201};
                 chai.request(server)
                     .put('/teams/assad/numPlayer')

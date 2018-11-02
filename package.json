@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "test": "set NODE_ENV=test && mocha test/routes/teams-test.js"
+
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",

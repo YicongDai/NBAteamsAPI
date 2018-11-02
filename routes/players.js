@@ -31,13 +31,14 @@ router.findOne = (req, res) => {
 
     res.setHeader('Content-Type', 'application/json');
     Players.findOne({"name": req.params.name}, function (err, player) {
-        if (err)
-            res.json({message: 'Player NOT Found!', errmsg: err});
-        else {
-            if (player!=null)
-                res.send(JSON.stringify(player, null, 5));
-            else  res.json({ message: 'Player NOT Found! Please check the right name'} );
+        if (err||player==null){
+            res.status(404);
+            res.json({message: 'Player NOT Found! Please check the right name', errmsg: err});
         }
+
+        else
+                res.send(JSON.stringify(player, null, 5));
+
     });
 }
 
@@ -83,7 +84,8 @@ router.findOneByName= (req, res) => {
         .sort({'_id': -1})
         .exec(function (err, players) {
             if (err||players.length==0) {
-                res.json({message:"Players Not Found!",errmsg: err});
+                res.status(404);
+                res.json({message:"Players Not Found!(Invalid keyword)",errmsg: err});
             } else {
                 res.send(JSON.stringify(players,null,5));
             }
@@ -116,7 +118,8 @@ router.findOneByPosition= (req, res) => {
         .sort({'_id': -1})
         .exec(function (err, players) {
             if (err||players.length==0) {
-                res.json({message:"Players Not Found!",errmsg: err});
+                res.status(404);
+                res.json({message:"Players Not Found!(invalid keyword)",errmsg: err});
             } else {
                 res.send(JSON.stringify(players,null,5));
             }
@@ -199,15 +202,14 @@ router.changeTeamId = (req, res) => {
 router.deletePlayer= (req, res) => {
 
     Players.findByIdAndRemove(req.params.id, function (err,player) {
-        if (err)
-            res.json({message: 'Player NOT DELETED!', errmsg: err});
-        else {
-            if (player != null)
-                res.json({message: 'Player Successfully Deleted!',data:player});
-
-            else
-                res.json({message: 'Player NOT Found! Please check the right id'});
+        if (err||player==null) {
+            res.status(404)
+            res.json({message: 'Player NOT DELETED!(invalid id)', errmsg: err});
         }
+        else
+
+            res.json({message: 'Player Successfully Deleted!',data:player});
+
     });
 };
 module.exports = router;

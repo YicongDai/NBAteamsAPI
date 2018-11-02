@@ -90,14 +90,17 @@ router.addTeam = (req, res) => {
     team.city=req.body.city;
     team.zone={name:req.body.zone.name,location:req.body.zone.location};
     team.numPlayer =req.body.numPlayer;
-    team.championships=req.body.numPlayer;
+    team.championships=req.body.championships;
     team.rank=req.body.rank;
     team.playerId=req.body.playerId;
 
 
    team.save(function(err) {
-        if (err)
+        if (err){
+            res.status(404)
             res.json({ message: 'Team NOT Added!', errmsg : err } );// return a suitable error message
+        }
+
         else
             res.json({ message: 'Team Added Successfully!',data:team});// return a suitable success message
     });
@@ -174,11 +177,6 @@ router.changeNumPlayer = (req, res) => {
 router.changeRank = (req, res) => {
     res.setHeader('Content-Type', 'application/json');
 
-    // Teams.findById(req.params.id/*id from request parameters*/, function (err, team) {
-    //     if (err)
-    //         res.json({message: 'Team NOT Found!', errmsg: err});
-    //     else {
-    //         if (team != null) {
     Teams.findByIdAndUpdate({"_id": req.params.id}, {$set:{"rank": req.body.rank}}, function (err,team) {
         if (err){
             res.status(404);
@@ -188,11 +186,6 @@ router.changeRank = (req, res) => {
         else
             res.json({message: 'Team Successfully ChangeRank!'});
     });
-
-    //         else
-    //             res.json({message: 'Team NOT Found! Please check the right id'});
-    //     }
-    // });
 };
 
 //change playerId
@@ -206,6 +199,7 @@ router.changePlayerId = (req, res) => {
     //         if (team != null) {
     Teams.findByIdAndUpdate({"_id": req.params.id}, {$set:{playerId: req.body.playerId}}, function (err) {
         if (err)
+
             res.json({message: 'Team NOT Change playerId!', errmsg: err});
         else
             res.json({message: 'Team Successfully Change playerId!'});

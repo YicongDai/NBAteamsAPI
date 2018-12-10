@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "server": "cross-env NODE_ENV=dev PORT=3001 node lib/bin/www",
+    "start": "npm-run-all test build server",
+    "clean": "rimraf ./lib && mkdir lib",
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register test/routes/teams-test.js",
     "build": "babel ./ --out-dir lib/ --ignore ./node_modules,./.babelrc,./package.json,./package-lock.json,./test --copy-files"
   },
@@ -26,6 +28,8 @@
     "chai-http": "^2.0.1",
     "chai-things": "^0.2.0",
     "cross-env": "^5.2.0",
-    "mocha": "^3.4.2"
+    "mocha": "^3.4.2",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^2.6.2"
   }
 }

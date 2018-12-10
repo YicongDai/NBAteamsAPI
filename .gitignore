@@ -2,7 +2,7 @@
 /**/.DS_S*
 .DS_S*
 *.log
-/coverage
 /.nyc_output
 .idea
 /lib
+/coverage

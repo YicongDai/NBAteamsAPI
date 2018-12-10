@@ -1,12 +1,20 @@
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let server = require('../../bin/www');
+import chai from 'chai';
+import chaiHttp from 'chai-http' ;
+var server = null;
 let expect = chai.expect;
-chai.use(require('chai-things'))
+import _ from 'lodash';
+import things from 'chai-things'
+chai.use( things);
 chai.use(chaiHttp);
-let _ = require('lodash' );
 
 describe('Teams', function (){
+    before(function(){
+        delete require.cache[require.resolve('../../bin/www')];
+        server = require('../../bin/www');
+    });
+    after(function (done) {
+        server.close(done);
+    });
     describe('GET api', function () {
         describe('GET /teams', () => {
             it('should return all the teams in an array', function (done) {

@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "cross-env NODE_ENV=test mocha test/routes/teams-test.js"
+    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register test/routes/teams-test.js",
+    "build": "babel ./ --out-dir lib/ --ignore ./node_modules,./.babelrc,./package.json,./package-lock.json,./test --copy-files"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
@@ -18,6 +19,9 @@
     "morgan": "~1.9.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
     "chai": "^3.5.0",
     "chai-http": "^2.0.1",
     "chai-things": "^0.2.0",
